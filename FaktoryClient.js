@@ -5,6 +5,12 @@ class FaktoryClient {
     this.faktoryPassword = password
   }
 
+  async push(job) {
+    let conn = await this._connect()
+    await this._writeLine(conn, 'PUSH', job)
+    await this._close(conn)
+  }
+
   async _connect() {
     let conn = await Deno.connect({
       hostname: this.faktoryHost,
