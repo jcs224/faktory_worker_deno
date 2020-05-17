@@ -6,3 +6,8 @@ let conn = await client._connect()
 let text = await client._readLine(conn)
 
 console.log(text)
+
+let response = await client._writeLine(conn, 'HELLO', {
+  v: 2
+})
+console.log(response)
