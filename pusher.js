@@ -3,6 +3,6 @@ import FaktoryJob from './FaktoryJob.js'
 
 let client = new FaktoryClient('localhost', 7419)
 
-let job1 = new FaktoryJob('cooljob', [1, 2])
+let job = new FaktoryJob('adder', [1, 3])
 
-await client.push(job1)
+await client.push(job)
