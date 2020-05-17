@@ -6,10 +6,20 @@ class FaktoryClient {
   }
 
   async _connect() {
-    return await Deno.connect({
+    let conn = await Deno.connect({
       hostname: this.faktoryHost,
       port: this.faktoryPort
     })
+
+    let response = await this._readLine(conn)
+
+    if (!response.includes('+HI')) {
+      throw 'HI not received.'
+    }
+
+    await this._writeLine(conn, 'HELLO', { v: 2 })
+
+    return conn
   }
 
   async _readLine(conn) {
