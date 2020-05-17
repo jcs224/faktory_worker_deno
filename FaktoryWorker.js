@@ -8,6 +8,7 @@ class FaktoryWorker {
     this.jobFunction = null
     this.id = generate()
     this.client.setWorker(this)
+    this.stop = false
   }
 
   register(jobType, callable) {
@@ -15,15 +16,26 @@ class FaktoryWorker {
     this.jobFunction = callable
   }
 
-  async run() {
-    let inJob = await this.client.fetch(this.queues)
-
-    if (inJob) {
-      if (inJob.jobtype == this.jobType) {
-        this.jobFunction.call(this, inJob.args)
-        await this.client.ack(inJob.jid)
+  async run(daemonize = false) {
+    do {
+      let inJob = await this.client.fetch(this.queues)
+      
+      if (inJob) {
+        if (inJob.jobtype == this.jobType) {
+          try {
+            this.jobFunction.call(this, inJob.args)
+            await this.client.ack(inJob.jid)
+          } catch(err) {
+            console.log(err)
+            await this.client.fail(inJob.jid, err.type, err.message)
+          }
+        }
       }
-    }
+    } while (daemonize && !this.stop)
+  }
+
+  stop() {
+    this.stop = true
   }
 }
 

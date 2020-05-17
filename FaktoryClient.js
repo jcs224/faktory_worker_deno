@@ -4,6 +4,7 @@ class FaktoryClient {
     this.faktoryPort = port
     this.faktoryPassword = password
     this.worker = null
+    this.connection = null
   }
 
   setWorker(worker) {
@@ -11,73 +12,70 @@ class FaktoryClient {
   }
 
   async push(job) {
-    let conn = await this._connect()
-    await this._writeLine(conn, 'PUSH '+JSON.stringify(job))
-    await this._close(conn)
+    await this._writeLine('PUSH '+JSON.stringify(job))
   }
 
   async fetch(queues = ['default']) {
-    let conn = await this._connect()
-    let response = await this._writeLine(conn, 'FETCH '+queues.join(' '))
-    await this._close(conn)
+    let response = await this._writeLine('FETCH '+queues.join(' '))
 
-    if (response.includes('$') && !response.includes('$-1')) {
+    if (response.includes('jid') && !response.includes('$-1')) {
       let jobString = response.substring(response.indexOf('{'), response.lastIndexOf('}') + 1)
-      return JSON.parse(jobString)
+      try {
+        let parsedJob = JSON.parse(jobString)
+        return parsedJob
+      } catch {
+        return null
+      }
     } else {
       return null
     }
   }
 
   async ack(jobId) {
-    let conn = await this._connect()
-    await this._writeLine(conn, 'ACK '+JSON.stringify({ jid: jobId }))
-    await this._close(conn)
+    await this._writeLine('ACK '+JSON.stringify({ jid: jobId }))
   }
 
-  async _connect() {
-    let conn = await Deno.connect({
+  async fail(jobId, errorType = 'Unknown', message = 'Job failed.') {
+    await this._writeLine('FAIL '+JSON.stringify({
+      jid: jobId,
+      errType: errorType,
+      message: message
+    }))
+  }
+
+  async connect() {
+    this.connection = await Deno.connect({
       hostname: this.faktoryHost,
       port: this.faktoryPort
     })
 
-    let response = await this._readLine(conn)
+    let response = await this._readLine()
 
     if (!response.includes('+HI')) {
       throw 'HI not received.'
     }
 
-    await this._writeLine(conn, 'HELLO '+JSON.stringify({ v: 2 }))
-
-    return conn
+    await this._writeLine('HELLO '+JSON.stringify({ v: 2 }))
   }
 
-  async _readLine(conn) {
-    let contents = ''
-    while (contents.indexOf('\r\n') === -1) {
-      let buf = new Uint8Array(1024)
-      await Deno.read(conn.rid, buf)
-      let text = new TextDecoder().decode(buf)
-      contents = contents + text
-    }
-  
-    // Much slower method, but less code
-    // let buf = await Deno.readAll(conn)
-    // let contents = new TextDecoder().decode(buf)
-  
-    return contents
+  async _readLine() {
+    let buf = new Uint8Array(4096)
+    await Deno.read(this.connection.rid, buf)
+    let text = new TextDecoder().decode(buf)
+    console.log(text)
+    return text
   }
 
-  async _writeLine(conn, stringPayload) {
+  async _writeLine(stringPayload) {
     let payload = stringPayload + '\r\n'
     let encodedPayload = new TextEncoder().encode(payload)
-    await Deno.write(conn.rid, encodedPayload)
-    let response = await this._readLine(conn)
+    await Deno.write(this.connection.rid, encodedPayload)
+    let response = await this._readLine()
     return response
   }
 
-  _close(conn) {
-    Deno.close(conn.rid)
+  _close() {
+    Deno.close(this.connection.rid)
   }
 }
 
