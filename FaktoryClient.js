@@ -58,6 +58,10 @@ class FaktoryClient {
     await this._writeLine('HELLO '+JSON.stringify({ v: 2 }))
   }
 
+  close() {
+    Deno.close(this.connection.rid)
+  }
+
   async _readLine() {
     let buf = new Uint8Array(4096)
     await Deno.read(this.connection.rid, buf)
@@ -71,10 +75,6 @@ class FaktoryClient {
     await Deno.write(this.connection.rid, encodedPayload)
     let response = await this._readLine()
     return response
-  }
-
-  _close() {
-    Deno.close(this.connection.rid)
   }
 }
 

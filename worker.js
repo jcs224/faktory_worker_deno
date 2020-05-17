@@ -17,3 +17,4 @@ worker.register('adder', (job) => {
 })
 
 await worker.run(true)
+client.close()
