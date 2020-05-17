@@ -62,7 +62,6 @@ class FaktoryClient {
     let buf = new Uint8Array(4096)
     await Deno.read(this.connection.rid, buf)
     let text = new TextDecoder().decode(buf)
-    console.log(text)
     return text
   }
 
