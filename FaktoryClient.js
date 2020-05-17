@@ -35,6 +35,10 @@ class FaktoryClient {
     let response = await this._readLine(conn)
     return response
   }
+
+  _close(conn) {
+    Deno.close(conn.rid)
+  }
 }
 
 export default FaktoryClient

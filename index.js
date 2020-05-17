@@ -11,3 +11,5 @@ let response = await client._writeLine(conn, 'HELLO', {
   v: 2
 })
 console.log(response)
+
+client._close(conn)
