@@ -1,7 +1,7 @@
 import FaktoryClient from './FaktoryClient.js'
 import FaktoryWorker from './FaktoryWorker.js'
 
-let client = new FaktoryClient('localhost', 7419)
+let client = new FaktoryClient('localhost', 7419, 'passthis')
 await client.connect()
 let worker = new FaktoryWorker(client)
 

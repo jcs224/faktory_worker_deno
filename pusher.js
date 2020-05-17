@@ -5,7 +5,7 @@ function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-let client = new FaktoryClient('localhost', 7419)
+let client = new FaktoryClient('localhost', 7419, 'passthis')
 await client.connect()
 
 let job = new FaktoryJob('adder', [

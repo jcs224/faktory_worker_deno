@@ -1,3 +1,6 @@
+import { Sha256 } from 'https://deno.land/std@0.51.0/hash/sha256.ts'
+import merge from 'https://deno.land/x/lodash@4.17.15-es/merge.js'
+
 class FaktoryClient {
   constructor(host, port, password = null) {
     this.faktoryHost = host
@@ -44,6 +47,10 @@ class FaktoryClient {
   }
 
   async connect() {
+    let requestDefaults = {
+      v: 2
+    }
+
     this.connection = await Deno.connect({
       hostname: this.faktoryHost,
       port: this.faktoryPort
@@ -55,7 +62,23 @@ class FaktoryClient {
       throw 'HI not received.'
     }
 
-    await this._writeLine('HELLO '+JSON.stringify({ v: 2 }))
+    // password required
+    if (response.includes('"i":') && response.includes('"s":')) {
+      let payloadString = response.substring(response.indexOf('{'), response.lastIndexOf('}') + 1)
+      let payloadJSON = JSON.parse(payloadString)
+      
+      let authData = this.faktoryPassword + payloadJSON.s
+      let sha = new Sha256()
+      authData = sha.update(authData)
+      for (let i = 1; i < payloadJSON.i; i++) {
+        let iterSha = new Sha256()
+        authData = iterSha.update(authData.digest())
+      }
+      let finalHex = authData.hex()
+      merge(requestDefaults, { pwdhash: finalHex })
+    }
+
+    await this._writeLine('HELLO '+JSON.stringify(requestDefaults))
   }
 
   close() {
@@ -66,6 +89,7 @@ class FaktoryClient {
     let buf = new Uint8Array(4096)
     await Deno.read(this.connection.rid, buf)
     let text = new TextDecoder().decode(buf)
+    console.log(text)
     return text
   }
 
