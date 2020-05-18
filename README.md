@@ -31,6 +31,8 @@ await client.push(job)
 // Push another job
 let job2 = new FaktoryJob('anotherjob', [])
 await client.push(job2)
+
+client.close()
 ```
 
 ### Fetching and executing jobs
