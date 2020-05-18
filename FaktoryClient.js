@@ -62,8 +62,13 @@ class FaktoryClient {
       throw 'HI not received.'
     }
 
-    // password required
+    // if password required
     if (response.includes('"i":') && response.includes('"s":')) {
+
+      if (!this.faktoryPassword) {
+        throw 'Password is required.'
+      }
+
       let payloadString = response.substring(response.indexOf('{'), response.lastIndexOf('}') + 1)
       let payloadJSON = JSON.parse(payloadString)
       
@@ -78,7 +83,11 @@ class FaktoryClient {
       merge(requestDefaults, { pwdhash: finalHex })
     }
 
-    await this._writeLine('HELLO '+JSON.stringify(requestDefaults))
+    let passwordResponse = await this._writeLine('HELLO '+JSON.stringify(requestDefaults))
+
+    if (passwordResponse.includes('ERR Invalid password')) {
+      throw 'Password is incorrect.'
+    }
   }
 
   close() {
