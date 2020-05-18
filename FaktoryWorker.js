@@ -4,16 +4,17 @@ class FaktoryWorker {
   constructor(client) {
     this.client = client
     this.queues = ['default']
-    this.jobType = ''
-    this.jobFunction = null
+    this.jobTypes = []
     this.id = generate()
     this.client.setWorker(this)
     this.stop = false
   }
 
   register(jobType, callable) {
-    this.jobType = jobType
-    this.jobFunction = callable
+    this.jobTypes.push({
+      jobType: jobType,
+      jobFunction: callable
+    })
   }
 
   async run(daemonize = false) {
@@ -21,14 +22,13 @@ class FaktoryWorker {
       let inJob = await this.client.fetch(this.queues)
       
       if (inJob) {
-        if (inJob.jobtype == this.jobType) {
-          try {
-            this.jobFunction.call(this, inJob.args)
-            await this.client.ack(inJob.jid)
-          } catch(err) {
-            console.log(err)
-            await this.client.fail(inJob.jid, err.type, err.message)
-          }
+        try {
+          let callable = this.jobTypes.filter(jt => jt.jobType == inJob.jobtype)[0].jobFunction
+          callable.call(this, inJob.args)
+          await this.client.ack(inJob.jid)
+        } catch(err) {
+          console.log(err)
+          await this.client.fail(inJob.jid, err.type, err.message)
         }
       }
     } while (daemonize && !this.stop)
