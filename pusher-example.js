@@ -8,9 +8,14 @@ function randomIntFromInterval(min, max) { // min and max included
 let client = new FaktoryClient('localhost', 7419, 'passthis')
 await client.connect()
 
+// Create job
 let job = new FaktoryJob('adder', [
   randomIntFromInterval(1, 10),
   randomIntFromInterval(1, 10)
 ])
-
+// Push job
 await client.push(job)
+
+// Push another job
+let job2 = new FaktoryJob('anotherjob', [])
+await client.push(job2)

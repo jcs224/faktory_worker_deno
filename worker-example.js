@@ -16,5 +16,10 @@ worker.register('adder', (job) => {
   // }
 })
 
+// Register multiple jobs with the same worker
+worker.register('anotherjob', (job) => {
+  console.log('whatever else')
+})
+
 await worker.run(true)
 client.close()
