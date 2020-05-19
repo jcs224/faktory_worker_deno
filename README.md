@@ -10,7 +10,7 @@ It could work on earlier versions, but untested.
 
 ### Pushing jobs
 ```js
-import { FaktoryClient, FaktoryJob } from 'https://raw.githubusercontent.com/jcs224/faktory_worker_deno/master/mod.js'
+import { FaktoryClient, FaktoryJob } from 'https://raw.githubusercontent.com/jcs224/faktory_worker_deno/v0.1.0/mod.js'
 
 function randomIntFromInterval(min, max) { // min and max included 
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -38,7 +38,7 @@ client.close()
 
 ### Fetching and executing jobs
 ```js
-import { FaktoryClient, FaktoryWorker } from 'https://raw.githubusercontent.com/jcs224/faktory_worker_deno/master/mod.js'
+import { FaktoryClient, FaktoryWorker } from 'https://raw.githubusercontent.com/jcs224/faktory_worker_deno/v0.1.0/mod.js'
 
 let client = new FaktoryClient('localhost', 7419)
 // If Faktory server requires a password, simply pass it as a third argument to FaktoryClient
