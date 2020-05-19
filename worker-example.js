@@ -1,7 +1,6 @@
-import FaktoryClient from './FaktoryClient.js'
-import FaktoryWorker from './FaktoryWorker.js'
+import { FaktoryClient, FaktoryWorker } from './mod.js'
 
-let client = new FaktoryClient('localhost', 7419)
+let client = new FaktoryClient('localhost', 7419, 'passthis')
 
 // If Faktory server requires a password, simply pass it as a third argument to FaktoryClient
 // let client = new FaktoryClient('localhost', 7419, 'somepassword')
