@@ -1,6 +1,6 @@
-import FaktoryClient from './FaktoryClient.js'
-import FaktoryWorker from './FaktoryWorker.js'
-import FaktoryJob from './FaktoryJob.js'
+import FaktoryClient from './src/FaktoryClient.js'
+import FaktoryWorker from './src/FaktoryWorker.js'
+import FaktoryJob from './src/FaktoryJob.js'
 
 export {
   FaktoryClient,
