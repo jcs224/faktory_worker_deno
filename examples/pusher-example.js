@@ -1,4 +1,4 @@
-import { FaktoryClient, FaktoryJob } from 'https://raw.githubusercontent.com/jcs224/faktory_worker_deno/v0.1.0/mod.js'
+import { FaktoryClient, FaktoryJob } from 'https://raw.githubusercontent.com/jcs224/faktory_worker_deno/v0.1.1/mod.js'
 
 function randomIntFromInterval(min, max) { // min and max included 
   return Math.floor(Math.random() * (max - min + 1) + min);
