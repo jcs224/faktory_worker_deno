@@ -4,10 +4,8 @@ function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+// let client = new FaktoryClient('localhost', 7419, 'somepassword') // Example with password
 let client = new FaktoryClient('localhost', 7419)
-
-// If Faktory server requires a password, simply pass it as a third argument to FaktoryClient
-// let client = new FaktoryClient('localhost', 7419, 'somepassword')
 
 await client.connect()
 
