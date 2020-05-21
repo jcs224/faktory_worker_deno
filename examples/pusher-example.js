@@ -5,7 +5,7 @@ function randomIntFromInterval(min, max) { // min and max included
 }
 
 // let client = new FaktoryClient('localhost', 7419, 'somepassword') // Example with password
-let client = new FaktoryClient('localhost', 7419)
+let client = new FaktoryClient('localhost', 7419, 'passthis')
 
 await client.connect()
 

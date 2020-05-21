@@ -1,7 +1,7 @@
 import { FaktoryClient, FaktoryWorker } from 'https://raw.githubusercontent.com/jcs224/faktory_worker_deno/v0.1.1/mod.js'
 
 // let client = new FaktoryClient('localhost', 7419, 'somepassword') // Example with password
-let client = new FaktoryClient('localhost', 7419)
+let client = new FaktoryClient('localhost', 7419, 'passthis')
 
 await client.connect()
 
