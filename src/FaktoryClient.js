@@ -110,4 +110,4 @@ class FaktoryClient {
   }
 }
 
-export default FaktoryClient
+export { FaktoryClient }

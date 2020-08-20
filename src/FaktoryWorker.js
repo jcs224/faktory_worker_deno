@@ -39,4 +39,4 @@ class FaktoryWorker {
   }
 }
 
-export default FaktoryWorker
+export { FaktoryWorker }

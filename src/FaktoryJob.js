@@ -8,4 +8,4 @@ class FaktoryJob {
   }
 }
 
-export default FaktoryJob
+export { FaktoryJob }
