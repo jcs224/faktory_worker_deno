@@ -10,7 +10,7 @@ It could work on earlier versions, but untested.
 
 ### Pushing jobs
 ```js
-import { FaktoryClient, FaktoryJob } from 'https://deno.land/x/faktory_worker_deno@v0.1.4/mod.ts'
+import { FaktoryClient, FaktoryJob } from 'https://deno.land/x/faktory_worker_deno@v0.1.5/mod.ts'
 
 function randomIntFromInterval(min, max) { // min and max included 
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -36,7 +36,7 @@ client.close()
 
 ### Fetching and executing jobs
 ```js
-import { FaktoryClient, FaktoryWorker } from 'https://deno.land/x/faktory_worker_deno@v0.1.4/mod.ts'
+import { FaktoryClient, FaktoryWorker } from 'https://deno.land/x/faktory_worker_deno@v0.1.5/mod.ts'
 
 let client = new FaktoryClient('localhost', 7419, 'optionalpassword')
 await client.connect()
