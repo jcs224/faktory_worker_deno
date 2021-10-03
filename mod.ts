@@ -1,3 +1,3 @@
-export { FaktoryClient } from './src/FaktoryClient.js'
-export { FaktoryJob } from './src/FaktoryJob.js'
-export { FaktoryWorker } from './src/FaktoryWorker.js'
+export { FaktoryClient } from "./src/FaktoryClient.ts";
+export { FaktoryJob } from "./src/FaktoryJob.ts";
+export { FaktoryWorker } from "./src/FaktoryWorker.ts";
