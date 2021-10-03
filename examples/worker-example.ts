@@ -1,6 +1,6 @@
 import { FaktoryClient, FaktoryWorker } from "../mod.ts";
 
-// let client = new FaktoryClient('localhost', 7419, 'somepassword') // Example with password
+// const client = new FaktoryClient('localhost', 7419, 'somepassword') // Example with password
 const client = new FaktoryClient("localhost", 7419, "passthis");
 
 await client.connect();
