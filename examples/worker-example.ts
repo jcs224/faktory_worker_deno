@@ -7,7 +7,7 @@ await client.connect();
 
 const worker = new FaktoryWorker(client);
 
-worker.register<[number, number]>("adder", (job) => {
+worker.register("adder", (job: [number, number]) => {
   console.log(job);
   console.log("args added together: " + (job[0] + job[1]));
   // Throw an error object to mark the job as failed, putting it in the queue for a retry
