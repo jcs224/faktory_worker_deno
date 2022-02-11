@@ -1,6 +1,13 @@
 # Faktory Deno Library
 [Faktory](https://github.com/contribsys/faktory) job queue library for Deno.
 
+:warning: This library is being deprecated. Fear not, however, because there is enough Deno/Node compatibility to allow this to work with the Node faktory library! https://github.com/jbielick/faktory_worker_node/issues/224#issuecomment-1035842820
+
+- Repo: https://github.com/jbielick/faktory_worker_node/
+- How to use with Deno: https://github.com/jbielick/faktory_worker_node/issues/224#issuecomment-1035842820
+
+:warning:
+
 ### Supported Faktory versions
 - 1.4.0
 
